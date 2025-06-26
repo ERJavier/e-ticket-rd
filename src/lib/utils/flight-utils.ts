@@ -48,18 +48,65 @@ export function autoDetectTravelDirection(
 /**
  * Validates if flight connection makes logical sense
  */
+export type FlightConnectionValidation = {
+  isValid: boolean;
+  error?: string;
+  warning?: string;
+};
+
 export function validateFlightConnection(
-  arrivalAirport: string,
-  departureAirport: string
-): { isValid: boolean; error?: string } | null {
-  // Validate airports match
-  if (arrivalAirport !== departureAirport) {
+  firstFlightDestination: string,
+  secondFlightOrigin: string,
+  firstFlightArrival?: string,
+  secondFlightDeparture?: string
+): FlightConnectionValidation {
+  // Check if airports match for connection
+  if (
+    firstFlightDestination.toUpperCase() !== secondFlightOrigin.toUpperCase()
+  ) {
     return {
       isValid: false,
-      error: `Airport mismatch: Your first flight arrives in ${arrivalAirport}, but your connecting flight departs from ${departureAirport}.`,
+      error: `Connection mismatch: First flight arrives at ${firstFlightDestination} but second flight departs from ${secondFlightOrigin}`,
     };
   }
 
+  // Check connection time if both times are provided
+  if (firstFlightArrival && secondFlightDeparture) {
+    try {
+      const arrivalTime = new Date(firstFlightArrival);
+      const departureTime = new Date(secondFlightDeparture);
+      const connectionMinutes =
+        (departureTime.getTime() - arrivalTime.getTime()) / (1000 * 60);
+
+      // Negative connection time indicates bad/incorrect times, but airports still match.
+      if (connectionMinutes < 0) {
+        return {
+          isValid: true,
+          warning:
+            "Connection timing appears inconsistent (departure before arrival). Please verify your itinerary.",
+        };
+      }
+
+      // Less than 45 minutes is too short for international connections
+      if (connectionMinutes < 45) {
+        return {
+          isValid: true,
+          warning: `Connection time is very short (${Math.round(connectionMinutes)} minutes). Ensure this is sufficient for international transfer.`,
+        };
+      }
+
+      // More than 24 hours might be intentional layover
+      if (connectionMinutes > 1440) {
+        return {
+          isValid: true,
+          warning: `Long layover detected (${Math.round(connectionMinutes / 60)} hours). Confirm this is intentional.`,
+        };
+      }
+    } catch {
+      // If we can't parse times, just validate airports
+      return { isValid: true };
+    }
+  }
   return { isValid: true };
 }
 
@@ -125,7 +172,8 @@ export function suggestNationalityFromBirthCountry(
     normalized === "dominican republic" ||
     normalized.includes("dominican republic") ||
     normalized === "do" ||
-    normalized === "república dominicana"
+    normalized === "república dominicana" ||
+    normalized.includes("república dominicana")
   ) {
     return "Dominican Republic";
   }
