@@ -15,6 +15,7 @@ import * as React from "react";
 
 import { FormField } from "@/components/forms/form-field";
 import { FormRadioGroup } from "@/components/forms/form-radio-group";
+import { PassportScanner } from "@/components/forms/passport-scanner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AutoFillIndicator } from "@/components/ui/auto-fill-indicator";
 import { Badge } from "@/components/ui/badge";
@@ -625,6 +626,23 @@ export function PassportInformationSection({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Passport Scanner - OCR Feature */}
+        <PassportScanner
+          form={form}
+          fieldPrefix={fieldPrefix}
+          travelerIndex={travelerIndex}
+        />
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card text-muted-foreground px-2">
+              Or enter manually
+            </span>
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <form.AppField
             name={fieldName("personalInfo.passport.number")}
