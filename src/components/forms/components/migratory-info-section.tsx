@@ -16,8 +16,8 @@ import * as React from "react";
 import { FormField } from "@/components/forms/form-field";
 import { FormRadioGroup } from "@/components/forms/form-radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AutoFillIndicator } from "@/components/ui/auto-fill-indicator";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CountrySelect } from "@/components/ui/country-select";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFieldContext, useStore } from "@/components/ui/tanstack-form";
+import { useSmartNationality } from "@/lib/hooks/use-smart-nationality";
 import {
   CIVIL_STATUS_OPTIONS,
   OCCUPATION_OPTIONS,

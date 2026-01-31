@@ -129,6 +129,9 @@ export function getDominicanAirportName(code: string): string | null {
 
 /**
  * Determines if travelers should share nationality based on relationship
+ *
+ * Updated for Issue #32: All group travelers inherit nationality from lead traveler
+ * to reduce redundant data entry and improve user experience.
  */
 export function shouldShareNationality(
   groupNature: string | undefined,
@@ -136,15 +139,21 @@ export function shouldShareNationality(
 ): boolean {
   if (!groupNature) return false;
 
+  // Lead traveler never inherits from themselves
+  if (travelerRelation === "lead") return false;
+
+  // All group types support nationality inheritance for Issue #32:
+  // - Family: Children and spouses inherit from lead
+  // - Partner: Partner inherits from lead
+  // - Friends: All friends inherit from lead traveler
+  // - Work_Colleagues: All colleagues inherit from lead traveler
   switch (groupNature) {
     case "Family":
-      // Children often share nationality with parents
-      // Spouses may share nationality but not always
-      return travelerRelation === "child";
-
     case "Partner":
-      // Partners may share nationality but not guaranteed
-      return false;
+    case "Friends":
+    case "Work_Colleagues":
+      // All companions inherit nationality from lead traveler
+      return true;
 
     default:
       return false;

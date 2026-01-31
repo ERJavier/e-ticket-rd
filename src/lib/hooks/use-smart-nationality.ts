@@ -71,7 +71,10 @@ export function useSmartNationality({
   // Get current traveler nationality
   const currentNationality = useStore(form.store, (state: unknown) => {
     const values = (state as { values: ApplicationData }).values;
-    const currentTraveler = values.travelers?.[travelerIndex];
+    const safeIndex =
+      Number.isInteger(travelerIndex) && travelerIndex >= 0 ? travelerIndex : 0;
+    // eslint-disable-next-line security/detect-object-injection
+    const currentTraveler = values.travelers?.[safeIndex];
     const nationality = currentTraveler?.personalInfo?.passport?.nationality;
     return typeof nationality === "string" && nationality.trim()
       ? nationality
@@ -81,6 +84,7 @@ export function useSmartNationality({
   // Determine if this traveler can inherit
   const canInherit =
     travelerIndex > 0 && // Must be a companion (not lead)
+    (normalizedGroupNature === "Family" || normalizedGroupNature === "Partner") && // Only for supported group types
     (normalizedGroupNature === "Family" || normalizedGroupNature === "Partner") && // Only for supported group types
     !!leadNationality; // Lead must have nationality set
 
