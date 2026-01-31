@@ -16,8 +16,8 @@ import * as React from "react";
 import { FormField } from "@/components/forms/form-field";
 import { FormRadioGroup } from "@/components/forms/form-radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AutoFillIndicator } from "@/components/ui/auto-fill-indicator";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CountrySelect } from "@/components/ui/country-select";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFieldContext, useStore } from "@/components/ui/tanstack-form";
+import { useSmartNationality } from "@/lib/hooks/use-smart-nationality";
 import {
   CIVIL_STATUS_OPTIONS,
   OCCUPATION_OPTIONS,
@@ -519,6 +520,86 @@ export function ResidencyStatusSection({
 /**
  * Passport Information Section - Reusable component
  */
+interface NationalityFieldWithAutoFillProps {
+  form: AppFormApi;
+  field: AppFieldApi;
+  fieldPrefix: string;
+  travelerIndex?: number;
+}
+
+function NationalityFieldWithAutoFill({
+  form,
+  field,
+  fieldPrefix,
+  travelerIndex,
+}: NationalityFieldWithAutoFillProps) {
+  const birthCountryFieldName = fieldPrefix
+    ? `${fieldPrefix}.personalInfo.birthCountry`
+    : "personalInfo.birthCountry";
+
+  const birthCountry = form.getFieldValue(birthCountryFieldName);
+  const suggestedFromBirth =
+    field.state.value &&
+    birthCountry &&
+    suggestNationalityFromBirthCountry(birthCountry) === field.state.value;
+
+  const groupNature = useStore(
+    form.store,
+    (state: unknown) =>
+      (state as { values: ApplicationData }).values.travelCompanions
+        ?.groupNature
+  );
+
+  const {
+    isAutoFilled,
+    canInherit,
+    leadNationality,
+    clearInheritance,
+    applyInheritance,
+  } = useSmartNationality({
+    form,
+    travelerIndex: travelerIndex ?? 0,
+    groupNature,
+  });
+
+  return (
+    <div className="space-y-3">
+      <FormField
+        field={field}
+        label="Nationality"
+        required
+        description="As it appears on your passport"
+      >
+        <div className="relative">
+          <CountrySelect field={field} placeholder="Select your nationality" />
+
+          {canInherit && (
+            <div className="absolute top-1/2 right-2 z-10 -translate-y-1/2">
+              <AutoFillIndicator
+                isAutoFilled={isAutoFilled}
+                sourceLabel="lead traveler"
+                onClear={clearInheritance}
+                onReapply={leadNationality ? applyInheritance : undefined}
+              />
+            </div>
+          )}
+        </div>
+      </FormField>
+
+      {suggestedFromBirth && (
+        <Alert>
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Auto-suggested:</strong> Based on your birth country (
+            {birthCountry}), we&apos;ve suggested this nationality. You can
+            change it if needed.
+          </AlertDescription>
+        </Alert>
+      )}
+    </div>
+  );
+}
+
 export function PassportInformationSection({
   form,
   fieldPrefix = "",
@@ -644,60 +725,14 @@ export function PassportInformationSection({
             },
           }}
         >
-          {(field: AppFieldApi) => {
-            // Check if nationality was auto-suggested from birth country
-            const birthCountryFieldName = fieldName(
-              "personalInfo.birthCountry"
-            );
-            const birthCountry = form.getFieldValue(birthCountryFieldName);
-            const suggestedFromBirth =
-              field.state.value &&
-              birthCountry &&
-              suggestNationalityFromBirthCountry(birthCountry) ===
-                field.state.value;
-
-            // Check for group inheritance (family/children)
-            const showGroupInheritanceInfo =
-              travelerIndex !== undefined &&
-              travelerIndex > 0 &&
-              fieldPrefix?.includes("travelers[");
-
-            return (
-              <div className="space-y-3">
-                <FormField
-                  field={field}
-                  label="Nationality"
-                  required
-                  description="As it appears on your passport"
-                >
-                  <CountrySelect
-                    field={field}
-                    placeholder="Select your nationality"
-                  />
-                </FormField>
-
-                {/* Auto-suggestion feedback */}
-                {suggestedFromBirth && (
-                  <Alert>
-                    <CheckCircle className="h-4 w-4" />
-                    <AlertDescription>
-                      <strong>Auto-suggested:</strong> Based on your birth
-                      country ({birthCountry}), we&apos;ve suggested this
-                      nationality. You can change it if needed.
-                    </AlertDescription>
-                  </Alert>
-                )}
-
-                {/* Group inheritance button for family members */}
-                {showGroupInheritanceInfo && (
-                  <FamilyNationalityInheritance
-                    form={form}
-                    nationalityField={field}
-                  />
-                )}
-              </div>
-            );
-          }}
+          {(field: AppFieldApi) => (
+            <NationalityFieldWithAutoFill
+              form={form}
+              field={field}
+              fieldPrefix={fieldPrefix}
+              travelerIndex={travelerIndex}
+            />
+          )}
         </form.AppField>
 
         <form.AppField name={fieldName("personalInfo.passport.expiryDate")}>
@@ -909,67 +944,6 @@ function MigrationInfoAlert({
  * Family Nationality Inheritance Component
  * Allows family members to inherit nationality from lead traveler
  */
-function FamilyNationalityInheritance({
-  form,
-  nationalityField,
-}: {
-  form: AppFormApi;
-  nationalityField: AppFieldApi;
-}) {
-  // Get lead traveler's nationality
-  const leadTravelerNationality = useStore(form.store, (state) => {
-    const appState = state as { values: ApplicationData };
-    return appState.values.travelers?.[0]?.personalInfo?.passport?.nationality;
-  });
-
-  // Get group nature to determine if we should show inheritance option
-  const groupNature = useStore(form.store, (state) => {
-    const appState = state as { values: ApplicationData };
-    return appState.values.travelCompanions?.groupNature;
-  });
-
-  // Show for family groups and partner groups when lead traveler has nationality set
-  if (
-    (groupNature !== "Family" && groupNature !== "Partner") ||
-    !leadTravelerNationality ||
-    !leadTravelerNationality.trim()
-  ) {
-    return null;
-  }
-
-  // Don't show if already has the same nationality
-  if (nationalityField.state.value === leadTravelerNationality) {
-    return null;
-  }
-
-  const handleInheritNationality = () => {
-    nationalityField.handleChange(leadTravelerNationality);
-  };
-
-  return (
-    <Alert>
-      <Info className="h-4 w-4" />
-      <AlertDescription className="flex items-center justify-between">
-        <span>
-          <strong>
-            {groupNature === "Partner" ? "Partner travel" : "Family travel"}:
-          </strong>{" "}
-          Use the same nationality as the main traveler (
-          {leadTravelerNationality})?
-        </span>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleInheritNationality}
-        >
-          Copy Nationality
-        </Button>
-      </AlertDescription>
-    </Alert>
-  );
-}
-
 /**
  * Address Information Alert - Inherited from general-info-step.tsx pattern
  * Provides contextual information about address collection
