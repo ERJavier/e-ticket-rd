@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { WalletButtons } from "@/components/wallet/wallet-buttons";
 import { createApplicationUUID } from "@/lib/utils/application-utils";
 
 import type { ApplicationData } from "@/lib/schemas/forms";
@@ -460,6 +461,11 @@ export function SuccessPage({
               </div>
             </DialogContent>
           </Dialog>
+
+          <WalletButtons
+            submittedData={submittedData}
+            applicationCode={applicationCode}
+          />
         </div>
 
         {/* Secondary Actions */}
