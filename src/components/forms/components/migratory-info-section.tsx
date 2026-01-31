@@ -45,8 +45,6 @@ import {
   validateSex,
   validateState,
 } from "@/lib/schemas/validation";
-import { AutoFillIndicator } from "@/components/ui/auto-fill-indicator";
-import { useSmartNationality } from "@/lib/hooks/use-smart-nationality";
 import { suggestNationalityFromBirthCountry } from "@/lib/utils/flight-utils";
 import { booleanFieldAdapter } from "@/lib/utils/form-utils";
 
@@ -99,12 +97,12 @@ export function MigratoryInfoSection({
         .travelDirection === "ENTRY"
   );
 
-  const isDifferentNationality = useStore(form.store, (state: unknown) => {
-    const applicationState = state as { values: ApplicationData };
+  const isDifferentNationality = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
     if (fieldPrefix && travelerIndex !== undefined) {
       // For array items: travelers[0].personalInfo.passport.isDifferentNationality
       // eslint-disable-next-line security/detect-object-injection
-      const traveler = applicationState.values.travelers?.[travelerIndex];
+      const traveler = appState.values.travelers?.[travelerIndex];
       return traveler?.personalInfo?.passport?.isDifferentNationality;
     }
     // No single traveler path - this is only used for array-based travelers
@@ -441,93 +439,6 @@ export function BirthInformationSection({
 }
 
 /**
- * Nationality Field with Smart Auto-Fill Component (Issue #32)
- * Handles nationality auto-fill from lead traveler for group travel
- */
-interface NationalityFieldWithAutoFillProps {
-  form: AppFormApi;
-  field: AppFieldApi;
-  fieldPrefix: string;
-  travelerIndex?: number;
-}
-
-function NationalityFieldWithAutoFill({
-  form,
-  field,
-  fieldPrefix,
-  travelerIndex,
-}: NationalityFieldWithAutoFillProps) {
-  // Check if nationality was auto-suggested from birth country
-  const birthCountryFieldName = fieldPrefix
-    ? `${fieldPrefix}.personalInfo.birthCountry`
-    : "personalInfo.birthCountry";
-  const birthCountry = form.getFieldValue(birthCountryFieldName);
-  const suggestedFromBirth =
-    field.state.value &&
-    birthCountry &&
-    suggestNationalityFromBirthCountry(birthCountry) === field.state.value;
-
-  // Get group nature from store for smart inheritance
-  const groupNature = useStore(
-    form.store,
-    (state: unknown) =>
-      (state as { values: ApplicationData }).values.travelCompanions
-        ?.groupNature
-  );
-
-  // Use smart nationality hook for group inheritance (Issue #32)
-  const {
-    isAutoFilled,
-    canInherit,
-    leadNationality,
-    clearInheritance,
-    applyInheritance,
-  } = useSmartNationality({
-    form,
-    travelerIndex: travelerIndex ?? 0,
-    groupNature,
-  });
-
-  return (
-    <div className="space-y-3">
-      <FormField
-        field={field}
-        label="Nationality"
-        required
-        description="As it appears on your passport"
-      >
-        <div className="relative">
-          <CountrySelect field={field} placeholder="Select your nationality" />
-          {/* Auto-fill indicator for group inheritance (Issue #32) */}
-          {canInherit && (
-            <div className="absolute top-1/2 right-2 z-10 -translate-y-1/2">
-              <AutoFillIndicator
-                isAutoFilled={isAutoFilled}
-                sourceLabel="lead traveler"
-                onClear={clearInheritance}
-                onReapply={leadNationality ? applyInheritance : undefined}
-              />
-            </div>
-          )}
-        </div>
-      </FormField>
-
-      {/* Auto-suggestion feedback from birth country */}
-      {suggestedFromBirth && (
-        <Alert>
-          <CheckCircle className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Auto-suggested:</strong> Based on your birth country (
-            {birthCountry}), we&apos;ve suggested this nationality. You can
-            change it if needed.
-          </AlertDescription>
-        </Alert>
-      )}
-    </div>
-  );
-}
-
-/**
  * Residency Status Section - Conditional component
  */
 export function ResidencyStatusSection({
@@ -609,6 +520,86 @@ export function ResidencyStatusSection({
 /**
  * Passport Information Section - Reusable component
  */
+interface NationalityFieldWithAutoFillProps {
+  form: AppFormApi;
+  field: AppFieldApi;
+  fieldPrefix: string;
+  travelerIndex?: number;
+}
+
+function NationalityFieldWithAutoFill({
+  form,
+  field,
+  fieldPrefix,
+  travelerIndex,
+}: NationalityFieldWithAutoFillProps) {
+  const birthCountryFieldName = fieldPrefix
+    ? `${fieldPrefix}.personalInfo.birthCountry`
+    : "personalInfo.birthCountry";
+
+  const birthCountry = form.getFieldValue(birthCountryFieldName);
+  const suggestedFromBirth =
+    field.state.value &&
+    birthCountry &&
+    suggestNationalityFromBirthCountry(birthCountry) === field.state.value;
+
+  const groupNature = useStore(
+    form.store,
+    (state: unknown) =>
+      (state as { values: ApplicationData }).values.travelCompanions
+        ?.groupNature
+  );
+
+  const {
+    isAutoFilled,
+    canInherit,
+    leadNationality,
+    clearInheritance,
+    applyInheritance,
+  } = useSmartNationality({
+    form,
+    travelerIndex: travelerIndex ?? 0,
+    groupNature,
+  });
+
+  return (
+    <div className="space-y-3">
+      <FormField
+        field={field}
+        label="Nationality"
+        required
+        description="As it appears on your passport"
+      >
+        <div className="relative">
+          <CountrySelect field={field} placeholder="Select your nationality" />
+
+          {canInherit && (
+            <div className="absolute top-1/2 right-2 z-10 -translate-y-1/2">
+              <AutoFillIndicator
+                isAutoFilled={isAutoFilled}
+                sourceLabel="lead traveler"
+                onClear={clearInheritance}
+                onReapply={leadNationality ? applyInheritance : undefined}
+              />
+            </div>
+          )}
+        </div>
+      </FormField>
+
+      {suggestedFromBirth && (
+        <Alert>
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Auto-suggested:</strong> Based on your birth country (
+            {birthCountry}), we&apos;ve suggested this nationality. You can
+            change it if needed.
+          </AlertDescription>
+        </Alert>
+      )}
+    </div>
+  );
+}
+
 export function PassportInformationSection({
   form,
   fieldPrefix = "",
@@ -721,7 +712,6 @@ export function PassportInformationSection({
           </form.AppField>
         </div>
 
-        {/* Nationality Field with Smart Auto-Fill (Issue #32) */}
         <form.AppField
           name={fieldName("personalInfo.passport.nationality")}
           validators={{
@@ -836,22 +826,20 @@ export function AddressSection({
   travelerIndex?: number;
 }) {
   // Check if this traveler uses shared address (from group logic)
-  const usesSharedAddress = useStore(form.store, (state: unknown) => {
-    const applicationState = state as { values: ApplicationData };
+  const usesSharedAddress = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
     if (fieldPrefix && travelerIndex !== undefined) {
       // eslint-disable-next-line security/detect-object-injection
-      const traveler = applicationState.values.travelers?.[travelerIndex];
+      const traveler = appState.values.travelers?.[travelerIndex];
       return traveler?.addressInheritance?.usesSharedAddress || false;
     }
     return false;
   });
 
-  const groupNature = useStore(
-    form.store,
-    (state: unknown) =>
-      (state as { values: ApplicationData }).values.travelCompanions
-        ?.groupNature
-  );
+  const groupNature = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
+    return appState.values.travelCompanions?.groupNature;
+  });
 
   if (usesSharedAddress) {
     return (
@@ -887,11 +875,7 @@ export function AddressSection({
       <IndividualAddressForm form={form} fieldPrefix={fieldPrefix} />
 
       {/* Contextual Information Alert - Inherited from general-info-step.tsx */}
-      <AddressInformationAlert
-        form={form}
-        _fieldPrefix={fieldPrefix}
-        travelerIndex={travelerIndex}
-      />
+      <AddressInformationAlert form={form} travelerIndex={travelerIndex} />
     </div>
   );
 }
@@ -907,11 +891,10 @@ function MigrationInfoAlert({
   form: AppFormApi;
   travelerIndex?: number;
 }) {
-  const travelDirection = useStore(
-    form.store,
-    (state: unknown) =>
-      (state as { values: ApplicationData }).values.flightInfo.travelDirection
-  );
+  const travelDirection = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
+    return appState.values.flightInfo.travelDirection;
+  });
 
   const isLeadTraveler = travelerIndex === 0;
 
@@ -958,31 +941,29 @@ function MigrationInfoAlert({
 }
 
 /**
+ * Family Nationality Inheritance Component
+ * Allows family members to inherit nationality from lead traveler
+ */
+/**
  * Address Information Alert - Inherited from general-info-step.tsx pattern
  * Provides contextual information about address collection
  */
 function AddressInformationAlert({
   form,
-  _fieldPrefix,
   travelerIndex,
 }: {
   form: AppFormApi;
-  _fieldPrefix?: string;
   travelerIndex?: number;
 }) {
-  const isGroupTravel = useStore(
-    form.store,
-    (state: unknown) =>
-      (state as { values: ApplicationData }).values.travelCompanions
-        ?.isGroupTravel
-  );
+  const isGroupTravel = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
+    return appState.values.travelCompanions?.isGroupTravel;
+  });
 
-  const groupNature = useStore(
-    form.store,
-    (state: unknown) =>
-      (state as { values: ApplicationData }).values.travelCompanions
-        ?.groupNature
-  );
+  const groupNature = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
+    return appState.values.travelCompanions?.groupNature;
+  });
 
   const isLeadTraveler = travelerIndex === 0;
 
@@ -1044,12 +1025,10 @@ function IndividualAddressForm({
     fieldPrefix ? `${fieldPrefix}.${name}` : name;
 
   // Determine if we're in a group travel scenario or single traveler
-  const isGroupTravel = useStore(
-    form.store,
-    (state: unknown) =>
-      (state as { values: ApplicationData }).values.travelCompanions
-        ?.isGroupTravel
-  );
+  const isGroupTravel = useStore(form.store, (state) => {
+    const appState = state as { values: ApplicationData };
+    return appState.values.travelCompanions?.isGroupTravel;
+  });
 
   // For group travel, use individual address path; for solo, use general info
   const getAddressFieldName = (field: string) => {

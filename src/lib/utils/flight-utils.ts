@@ -48,65 +48,18 @@ export function autoDetectTravelDirection(
 /**
  * Validates if flight connection makes logical sense
  */
-export type FlightConnectionValidation = {
-  isValid: boolean;
-  error?: string;
-  warning?: string;
-};
-
 export function validateFlightConnection(
-  firstFlightDestination: string,
-  secondFlightOrigin: string,
-  firstFlightArrival?: string,
-  secondFlightDeparture?: string
-): FlightConnectionValidation {
-  // Check if airports match for connection
-  if (
-    firstFlightDestination.toUpperCase() !== secondFlightOrigin.toUpperCase()
-  ) {
+  arrivalAirport: string,
+  departureAirport: string
+): { isValid: boolean; error?: string } | null {
+  // Validate airports match
+  if (arrivalAirport !== departureAirport) {
     return {
       isValid: false,
-      error: `Connection mismatch: First flight arrives at ${firstFlightDestination} but second flight departs from ${secondFlightOrigin}`,
+      error: `Airport mismatch: Your first flight arrives in ${arrivalAirport}, but your connecting flight departs from ${departureAirport}.`,
     };
   }
 
-  // Check connection time if both times are provided
-  if (firstFlightArrival && secondFlightDeparture) {
-    try {
-      const arrivalTime = new Date(firstFlightArrival);
-      const departureTime = new Date(secondFlightDeparture);
-      const connectionMinutes =
-        (departureTime.getTime() - arrivalTime.getTime()) / (1000 * 60);
-
-      // Negative connection time indicates bad/incorrect times, but airports still match.
-      if (connectionMinutes < 0) {
-        return {
-          isValid: true,
-          warning:
-            "Connection timing appears inconsistent (departure before arrival). Please verify your itinerary.",
-        };
-      }
-
-      // Less than 45 minutes is too short for international connections
-      if (connectionMinutes < 45) {
-        return {
-          isValid: true,
-          warning: `Connection time is very short (${Math.round(connectionMinutes)} minutes). Ensure this is sufficient for international transfer.`,
-        };
-      }
-
-      // More than 24 hours might be intentional layover
-      if (connectionMinutes > 1440) {
-        return {
-          isValid: true,
-          warning: `Long layover detected (${Math.round(connectionMinutes / 60)} hours). Confirm this is intentional.`,
-        };
-      }
-    } catch {
-      // If we can't parse times, just validate airports
-      return { isValid: true };
-    }
-  }
   return { isValid: true };
 }
 
@@ -129,9 +82,6 @@ export function getDominicanAirportName(code: string): string | null {
 
 /**
  * Determines if travelers should share nationality based on relationship
- *
- * Updated for Issue #32: All group travelers inherit nationality from lead traveler
- * to reduce redundant data entry and improve user experience.
  */
 export function shouldShareNationality(
   groupNature: string | undefined,
@@ -139,21 +89,15 @@ export function shouldShareNationality(
 ): boolean {
   if (!groupNature) return false;
 
-  // Lead traveler never inherits from themselves
-  if (travelerRelation === "lead") return false;
-
-  // All group types support nationality inheritance for Issue #32:
-  // - Family: Children and spouses inherit from lead
-  // - Partner: Partner inherits from lead
-  // - Friends: All friends inherit from lead traveler
-  // - Work_Colleagues: All colleagues inherit from lead traveler
   switch (groupNature) {
     case "Family":
+      // Children often share nationality with parents
+      // Spouses may share nationality but not always
+      return travelerRelation === "child";
+
     case "Partner":
-    case "Friends":
-    case "Work_Colleagues":
-      // All companions inherit nationality from lead traveler
-      return true;
+      // Partners may share nationality but not guaranteed
+      return false;
 
     default:
       return false;
@@ -181,8 +125,7 @@ export function suggestNationalityFromBirthCountry(
     normalized === "dominican republic" ||
     normalized.includes("dominican republic") ||
     normalized === "do" ||
-    normalized === "república dominicana" ||
-    normalized.includes("república dominicana")
+    normalized === "república dominicana"
   ) {
     return "Dominican Republic";
   }

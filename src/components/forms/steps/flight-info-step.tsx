@@ -821,6 +821,7 @@ export function FlightInfoStep({
       originResult?.success &&
       originResult.flight
     ) {
+      // Validate airport matching for connection
       return validateFlightConnection(
         originResult.flight.destination.iata,
         result.flight.origin.iata
@@ -936,25 +937,15 @@ export function FlightInfoStep({
                       </AlertDescription>
                     </Alert>
                   )}
-                  {connectionValidation.warning && (
+                  {connectionValidation.isValid && (
                     <Alert>
-                      <Info className="h-4 w-4" />
+                      <CheckCircle className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>Connection Warning:</strong>{" "}
-                        {connectionValidation.warning}
+                        <strong>Connection Validated:</strong> Your flight
+                        connection appears valid.
                       </AlertDescription>
                     </Alert>
                   )}
-                  {connectionValidation.isValid &&
-                    !connectionValidation.warning && (
-                      <Alert>
-                        <CheckCircle className="h-4 w-4" />
-                        <AlertDescription>
-                          <strong>Connection Validated:</strong> Your flight
-                          connection appears valid.
-                        </AlertDescription>
-                      </Alert>
-                    )}
                 </div>
               )}
             </CardContent>
