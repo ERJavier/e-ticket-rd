@@ -1,2 +1,17 @@
-export { default } from "./src/i18n/middleware";
-export { config } from "./src/i18n/middleware";
+import createMiddleware from "next-intl/middleware";
+
+import { defaultLocale, locales } from "./src/i18n/config";
+
+export default createMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: "always",
+});
+
+export const config = {
+  // Match all pathnames except for
+  // - API routes (/api/*)
+  // - Static files (e.g., /favicon.ico)
+  // - _next (Next.js internals)
+  matcher: ["/((?!api|_next|.*\\..*).*)"],
+};
