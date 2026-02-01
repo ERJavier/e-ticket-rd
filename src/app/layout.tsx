@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { getMessages, getTranslations } from "next-intl/server";
 
+import { DemoBanner } from "@/components/demo-banner";
 import { I18nProvider } from "@/components/i18n-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { defaultLocale, type Locale } from "@/i18n/config";
@@ -60,6 +61,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <DemoBanner />
             {children}
           </ThemeProvider>
         </I18nProvider>
