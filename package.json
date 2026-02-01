@@ -47,6 +47,7 @@
     "countries-list": "^3.2.2",
     "date-fns": "^4.1.0",
     "googleapis": "^171.0.0",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.513.0",
     "next": "16.1.6",
     "next-intl": "^4.8.1",
