@@ -4,11 +4,10 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export interface FileInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "type" | "onChange"
-  > {
+export interface FileInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type" | "onChange"
+> {
   onFileChange?: (file: File | null) => void;
   accept?: string;
   maxSize?: number; // in bytes

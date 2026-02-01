@@ -59,12 +59,16 @@ export async function POST(request: NextRequest) {
       />
     );
 
-    return new NextResponse(pdfBuffer, {
+    // NextResponse expects a Web-compatible body type. Buffer is a Uint8Array
+    // at runtime but isn't always assignable to `BodyInit` depending on TS libs.
+    const pdfBytes = new Uint8Array(pdfBuffer);
+
+    return new NextResponse(pdfBytes, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="eticket-${applicationCode}.pdf"`,
-        "Content-Length": pdfBuffer.length.toString(),
+        "Content-Length": pdfBytes.byteLength.toString(),
       },
     });
   } catch (error) {

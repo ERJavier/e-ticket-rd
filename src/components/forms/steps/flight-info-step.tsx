@@ -790,8 +790,8 @@ export function FlightInfoStep({
     const hasFlightLookupSuccess = result?.success;
     const hasManualFlightDetails = Boolean(
       values?.airline?.trim() &&
-        values?.departurePort?.trim() &&
-        values?.arrivalPort?.trim()
+      values?.departurePort?.trim() &&
+      values?.arrivalPort?.trim()
     );
 
     return hasFlightLookupSuccess || hasManualFlightDetails;

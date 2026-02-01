@@ -1,27 +1,32 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
+import nextPlugin from "@next/eslint-plugin-next";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
+import prettierConfig from "eslint-config-prettier";
+import importPlugin from "eslint-plugin-import";
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 import prettierPlugin from "eslint-plugin-prettier";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 import securityPlugin from "eslint-plugin-security";
 import sonarjsPlugin from "eslint-plugin-sonarjs";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-});
 
 const eslintConfig = [
   // Base JavaScript config
   js.configs.recommended,
 
   // Next.js configurations
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  nextPlugin.flatConfig.recommended,
+  nextPlugin.flatConfig.coreWebVitals,
+
+  // React plugin configuration
+  {
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
 
   // Global ignore patterns
   {
@@ -161,7 +166,14 @@ const eslintConfig = [
   },
 
   // React and JSX files
-  ...compat.extends("plugin:react/recommended", "plugin:react-hooks/recommended"),
+  reactPlugin.configs.flat.recommended,
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      "react-hooks": reactHooksPlugin,
+    },
+    rules: reactHooksPlugin.configs.recommended.rules,
+  },
   {
     files: ["**/*.{jsx,tsx}"],
     settings: {
@@ -190,10 +202,13 @@ const eslintConfig = [
   },
 
   // Accessibility rules
-  ...compat.extends("plugin:jsx-a11y/recommended"),
   {
     files: ["**/*.{jsx,tsx}"],
+    plugins: {
+      "jsx-a11y": jsxA11yPlugin,
+    },
     rules: {
+      ...jsxA11yPlugin.configs.recommended.rules,
       // Accessibility rules (critical for government projects)
       "jsx-a11y/alt-text": "error",
       "jsx-a11y/aria-props": "error",
@@ -210,9 +225,11 @@ const eslintConfig = [
   },
 
   // Import rules
-  ...compat.extends("plugin:import/recommended", "plugin:import/typescript"),
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      import: importPlugin,
+    },
     settings: {
       "import/resolver": {
         typescript: {
@@ -225,6 +242,8 @@ const eslintConfig = [
       },
     },
     rules: {
+      ...importPlugin.configs.recommended.rules,
+      ...importPlugin.configs.typescript.rules,
       // Import/Export organization
       "import/order": [
         "error",
@@ -267,8 +286,16 @@ const eslintConfig = [
   // Lint-staged specific exception
   {
     files: [".lintstagedrc.js"],
+    languageOptions: {
+      sourceType: "commonjs",
+      globals: {
+        module: "readonly",
+        require: "readonly",
+      },
+    },
     rules: {
       "sonarjs/no-duplicate-string": "off", // lint-staged configs often repeat command strings
+      "no-undef": "off",
     },
   },
 
@@ -288,7 +315,7 @@ const eslintConfig = [
   },
 
   // Prettier integration - must be last to override other formatting rules
-  ...compat.extends("prettier"),
+  prettierConfig,
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {

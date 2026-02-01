@@ -12,7 +12,6 @@ This guide ensures your VS Code environment is properly aligned with our CI/CD p
    ```
 
 2. **Verify settings are applied**:
-
    - Open VS Code settings (Cmd/Ctrl + ,)
    - Check that Prettier is set as default formatter
    - Verify "Format On Save" is enabled
@@ -196,7 +195,6 @@ If you're still experiencing formatting conflicts:
    ```
 
 2. **Check your extensions**:
-
    - Disable any other formatting extensions
    - Ensure only Prettier is handling formatting
 

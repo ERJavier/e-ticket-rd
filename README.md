@@ -38,8 +38,7 @@ This repository is intended as a **technical and product reference implementatio
 
 ## 🎯 What This Project Is
 
-This project explores a modernization of the Dominican Republic’s current migration e-ticket system  
-(https://eticket.migracion.gob.do).
+This project explores a modernization of the Dominican Republic’s current migration e-ticket system at <https://eticket.migracion.gob.do>.
 
 It focuses on **usability, reliability, accessibility, and security**, while remaining compatible with government-grade requirements.
 
@@ -49,14 +48,14 @@ It focuses on **usability, reliability, accessibility, and security**, while rem
 
 ## 📊 Problems Addressed & Improvements
 
-| Current Challenges              | Proposed Improvements                   |
-|---------------------------------|------------------------------------------|
-| Browser crashes, lost progress  | Autosave, draft recovery                 |
-| Long repetitive forms           | Smart forms & data reuse                 |
-| Poor mobile experience          | Mobile-first, responsive UI              |
-| Inconsistent QR validation      | Deterministic QR generation & validation |
-| Accessibility gaps              | WCAG 2.1 / 2.2 AA compliance              |
-| Limited error handling          | Clear feedback & recovery paths           |
+| Current Challenges             | Proposed Improvements                    |
+| ------------------------------ | ---------------------------------------- |
+| Browser crashes, lost progress | Autosave, draft recovery                 |
+| Long repetitive forms          | Smart forms & data reuse                 |
+| Poor mobile experience         | Mobile-first, responsive UI              |
+| Inconsistent QR validation     | Deterministic QR generation & validation |
+| Accessibility gaps             | WCAG 2.1 / 2.2 AA compliance             |
+| Limited error handling         | Clear feedback & recovery paths          |
 
 ---
 
@@ -110,7 +109,8 @@ cd e-ticket-rd
 pnpm install
 pnpm dev
 ```
-Open http://localhost:3000
+
+Open <http://localhost:3000>
 
 ### Scripts
 
@@ -124,4 +124,3 @@ pnpm type-check
 pnpm format
 pnpm check-all
 ```
-

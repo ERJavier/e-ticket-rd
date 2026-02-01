@@ -201,8 +201,8 @@ export function MultiStepForm({
         const flightInfo = values.flightInfo;
         const hasBasicFlightInfo = Boolean(
           flightInfo?.flightNumber &&
-            flightInfo?.airline &&
-            flightInfo?.departurePort
+          flightInfo?.airline &&
+          flightInfo?.departurePort
         );
 
         // If entering DR with connections, also check origin flight details
@@ -213,9 +213,9 @@ export function MultiStepForm({
         if (isEntryWithConnections) {
           const hasOriginFlightInfo = Boolean(
             flightInfo?.originFlightNumber &&
-              flightInfo?.originAirline &&
-              flightInfo?.originDeparturePort &&
-              flightInfo?.originArrivalPort
+            flightInfo?.originAirline &&
+            flightInfo?.originDeparturePort &&
+            flightInfo?.originArrivalPort
           );
           return hasBasicFlightInfo && hasOriginFlightInfo;
         }
@@ -228,13 +228,13 @@ export function MultiStepForm({
         // Check if all travelers have basic required info including address
         const hasValidTravelers = Boolean(
           values.travelers &&
-            values.travelers.length > 0 &&
-            values.travelers.every(
-              (traveler: TravelerData) =>
-                traveler.personalInfo?.firstName &&
-                traveler.personalInfo?.lastName &&
-                traveler.personalInfo?.passport?.number
-            )
+          values.travelers.length > 0 &&
+          values.travelers.every(
+            (traveler: TravelerData) =>
+              traveler.personalInfo?.firstName &&
+              traveler.personalInfo?.lastName &&
+              traveler.personalInfo?.passport?.number
+          )
         );
 
         // Also check if address info is present (moved from General Info step)

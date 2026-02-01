@@ -225,38 +225,31 @@ Items are categorized by their primary focus area (see Theme-Based Organization 
 ### Built-in GitHub Project Automations
 
 1. **Auto-add to Project**
-
    - **Trigger**: New issues or PRs in e-ticket-rd repository
    - **Filter**: `is:issue,pr is:open`
    - **Action**: Adds item to project
 
 2. **Item Added to Project**
-
    - **Trigger**: Item added to project
    - **Action**: Sets Status to "🔍 Triage"
 
 3. **Item Reopened**
-
    - **Trigger**: Closed item reopened
    - **Action**: Sets Status to "🔍 Triage"
 
 4. **Item Closed**
-
    - **Trigger**: Issue or PR closed
    - **Action**: Sets Status to "✅ Done"
 
 5. **Pull Request Merged**
-
    - **Trigger**: PR merged
    - **Action**: Sets Status to "✅ Done"
 
 6. **Code Changes Requested**
-
    - **Trigger**: PR review requests changes
    - **Action**: Sets Status to "⚙️ Implementation"
 
 7. **Code Review Approved**
-
    - **Trigger**: PR review approved
    - **Action**: Sets Status to "🧪 Validation"
 

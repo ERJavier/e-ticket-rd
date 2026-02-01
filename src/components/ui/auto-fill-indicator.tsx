@@ -12,8 +12,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-export interface AutoFillIndicatorProps
-  extends React.ComponentPropsWithoutRef<"div"> {
+export interface AutoFillIndicatorProps extends React.ComponentPropsWithoutRef<"div"> {
   /** Whether the field is currently auto-filled */
   isAutoFilled: boolean;
   /** Label describing the auto-fill source (e.g., "lead traveler") */

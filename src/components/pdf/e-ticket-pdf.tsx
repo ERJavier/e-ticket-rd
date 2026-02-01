@@ -344,7 +344,6 @@ export const ETicketPDF: React.FC<ETicketPDFProps> = ({
             {/* Right Column - QR Code */}
             <View style={styles.rightColumn}>
               <View style={styles.qrContainer}>
-                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image style={styles.qrCode} src={qrCodeDataURL} />
                 <Text style={styles.qrText}>
                   CÓDIGO QR DE USO EXCLUSIVO PARA VALIDACIÓN ADUANAL.

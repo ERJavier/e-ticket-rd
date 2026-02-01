@@ -19,6 +19,7 @@ It is written to clarify **what is ready**, **what is intentionally incomplete**
 ## 2. Technical Readiness
 
 ### Frontend & UX
+
 - [x] Mobile-first responsive design
 - [x] Multi-language support (i18n-ready)
 - [x] Accessibility targets defined (WCAG 2.1 / 2.2 AA)
@@ -26,6 +27,7 @@ It is written to clarify **what is ready**, **what is intentionally incomplete**
 - [x] QR code generation and validation logic defined
 
 ### Code Quality
+
 - [x] Type-safe codebase
 - [x] Linting and formatting enforced
 - [x] Automated checks via CI
