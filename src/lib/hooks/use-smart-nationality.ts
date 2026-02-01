@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useStore } from "@/components/ui/tanstack-form";
+
 import type { ApplicationData } from "@/lib/schemas/forms";
 import type { AppFormApi } from "@/lib/types/form-api";
-import { useStore } from "@/components/ui/tanstack-form";
 
 interface UseSmartNationalityOptions {
   form: AppFormApi;
@@ -84,8 +85,10 @@ export function useSmartNationality({
   // Determine if this traveler can inherit
   const canInherit =
     travelerIndex > 0 && // Must be a companion (not lead)
-    (normalizedGroupNature === "Family" || normalizedGroupNature === "Partner") && // Only for supported group types
-    (normalizedGroupNature === "Family" || normalizedGroupNature === "Partner") && // Only for supported group types
+    (normalizedGroupNature === "Family" ||
+      normalizedGroupNature === "Partner") && // Only for supported group types
+    (normalizedGroupNature === "Family" ||
+      normalizedGroupNature === "Partner") && // Only for supported group types
     !!leadNationality; // Lead must have nationality set
 
   // Check if lead nationality changed

@@ -1,0 +1,214 @@
+{
+  "metadata": {
+    "title": "Système E-Ticket République Dominicaine",
+    "description": "Formulaire Électronique d'Entrée/Sortie pour le Contrôle des Migrations"
+  },
+  "navigation": {
+    "newApplication": "Nouvelle Demande d'E-Ticket",
+    "importApplication": "Importer un E-Ticket Précédent",
+    "language": "Langue",
+    "selectLanguage": "Sélectionner la langue"
+  },
+  "landing": {
+    "title": "République Dominicaine",
+    "subtitle": "Système E-Ticket",
+    "description": "Formulaire électronique d'entrée ou de sortie pour la République Dominicaine. Ce formulaire numérique remplace le processus traditionnel papier pour une expérience migratoire plus rapide et efficace.",
+    "welcome": "Bienvenue",
+    "welcomeDescription": "Complétez votre formulaire électronique d'entrée ou de sortie pour la République Dominicaine. Ce formulaire numérique remplace le processus traditionnel papier pour une expérience migratoire plus rapide et efficace.",
+    "newApplication": "Nouvelle Demande d'E-Ticket",
+    "importPrevious": "Importer un E-Ticket Précédent",
+    "securityNote": "Vos données sont protégées par un chiffrement sécurisé"
+  },
+  "import": {
+    "title": "Importer un E-Ticket Précédent",
+    "description": "Téléchargez votre fichier de sauvegarde e-ticket chiffré et entrez le même numéro de vol et numéro de passeport utilisés lors de l'exportation pour restaurer vos données de demande en toute sécurité.",
+    "fileLabel": "Fichier de Sauvegarde E-Ticket",
+    "filePlaceholder": "Sélectionnez votre fichier de sauvegarde e-ticket",
+    "flightNumber": "Numéro de Vol",
+    "flightPlaceholder": "ex., AA1234",
+    "passportNumber": "Numéro de Passeport",
+    "passportPlaceholder": "Entrez le numéro de passeport",
+    "importButton": "Importer et Continuer",
+    "importing": "Importation en cours...",
+    "cancel": "Annuler",
+    "error": {
+      "missingData": "Veuillez sélectionner votre fichier de sauvegarde e-ticket et entrer à la fois le numéro de vol et le numéro de passeport utilisés lors de l'exportation",
+      "invalidFile": "Fichier de sauvegarde e-ticket invalide. Veuillez sélectionner un fichier exporté de ce système.",
+      "invalidFormat": "Format de fichier invalide. Veuillez sélectionner un fichier de sauvegarde e-ticket valide.",
+      "decryptFailed": "Échec du déchiffrement des données"
+    }
+  },
+  "form": {
+    "title": "Demande d'E-Ticket",
+    "subtitle": "Complétez toutes les étapes pour générer votre e-ticket",
+    "applicationCode": "Code de Demande",
+    "saveCode": "Sauvegardez ce code pour accéder à votre demande plus tard",
+    "progress": "Progression",
+    "step": "Étape",
+    "of": "sur",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "submit": "Soumettre la Demande",
+    "submitting": "Soumission en cours...",
+    "validation": {
+      "title": "Veuillez corriger les problèmes suivants :",
+      "required": "Ce champ est obligatoire",
+      "invalidEmail": "Veuillez entrer une adresse email valide",
+      "invalidPhone": "Veuillez entrer un numéro de téléphone valide"
+    }
+  },
+  "steps": {
+    "contact": {
+      "title": "Informations de Contact",
+      "subtitle": "Qui remplit cette demande ? Et comment pouvons-nous vous contacter ?",
+      "email": {
+        "label": "Adresse Email",
+        "placeholder": "votre@email.com",
+        "required": "L'email est obligatoire pour la livraison de l'e-ticket",
+        "description": "Nous enverrons la confirmation de votre e-ticket à cette adresse email"
+      },
+      "phone": {
+        "label": "Numéro de Téléphone",
+        "required": "Le numéro de téléphone est obligatoire pour les notifications de voyage",
+        "description": "Entrez un numéro de téléphone avec l'indicatif du pays pour les notifications de voyage"
+      }
+    },
+    "flight": {
+      "title": "Informations de Voyage",
+      "subtitle": "Quels sont vos plans de voyage ?",
+      "flightNumber": {
+        "label": "Numéro de Vol",
+        "placeholder": "ex., AA1234",
+        "description": "Entrez votre numéro de vol pour remplir automatiquement les détails"
+      },
+      "airline": {
+        "label": "Compagnie Aérienne",
+        "placeholder": "Sélectionnez la compagnie aérienne"
+      },
+      "departurePort": {
+        "label": "Aéroport de Départ",
+        "placeholder": "Sélectionnez l'aéroport de départ"
+      },
+      "arrivalPort": {
+        "label": "Aéroport d'Arrivée",
+        "placeholder": "Sélectionnez l'aéroport d'arrivée"
+      },
+      "travelDate": {
+        "label": "Date de Voyage",
+        "placeholder": "Sélectionnez la date"
+      },
+      "travelDirection": {
+        "label": "Direction du Voyage",
+        "entry": "Entrée en République Dominicaine",
+        "exit": "Sortie de la République Dominicaine"
+      },
+      "hasStops": {
+        "label": "Votre vol a-t-il des escales ?",
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "autoFill": {
+        "loading": "Recherche des informations de vol...",
+        "success": "Informations de vol remplies automatiquement avec succès !",
+        "error": "Impossible de trouver les informations du vol"
+      }
+    },
+    "companions": {
+      "title": "Compagnons de Voyage",
+      "subtitle": "Voyagez-vous avec des compagnons ?",
+      "isGroupTravel": {
+        "label": "Voyagez-vous en groupe ?",
+        "yes": "Oui, je voyage avec ma famille ou un groupe",
+        "no": "Non, je voyage seul"
+      },
+      "numberOfCompanions": {
+        "label": "Nombre de Compagnons",
+        "description": "Vous y compris, combien de personnes voyagent au total ?"
+      }
+    },
+    "travelers": {
+      "title": "Informations des Voyageurs",
+      "subtitle": "Informations personnelles et détails d'adresse pour tous les voyageurs",
+      "personalInfo": {
+        "title": "Informations Personnelles",
+        "firstName": {
+          "label": "Prénom",
+          "placeholder": "Entrez votre prénom"
+        },
+        "lastName": {
+          "label": "Nom de Famille",
+          "placeholder": "Entrez votre nom de famille"
+        },
+        "passport": {
+          "label": "Numéro de Passeport",
+          "placeholder": "Entrez le numéro de passeport"
+        },
+        "nationality": {
+          "label": "Nationalité",
+          "placeholder": "Sélectionnez le pays"
+        },
+        "birthDate": {
+          "label": "Date de Naissance",
+          "placeholder": "Sélectionnez la date"
+        },
+        "gender": {
+          "label": "Genre",
+          "male": "Masculin",
+          "female": "Féminin",
+          "other": "Autre"
+        }
+      },
+      "address": {
+        "title": "Adresse",
+        "permanentAddress": {
+          "label": "Adresse Permanente",
+          "placeholder": "Entrez votre adresse complète"
+        },
+        "residenceCountry": {
+          "label": "Pays de Résidence",
+          "placeholder": "Sélectionnez le pays"
+        },
+        "city": {
+          "label": "Ville",
+          "placeholder": "Entrez la ville"
+        }
+      },
+      "addTraveler": "Ajouter un Voyageur",
+      "removeTraveler": "Supprimer le Voyageur",
+      "scanPassport": "Scanner le Passeport"
+    },
+    "customs": {
+      "title": "Déclaration Douanière",
+      "subtitle": "Déclaration d'articles et de biens",
+      "overTenThousand": {
+        "label": "Transportez-vous plus de 10 000 USD en espèces ou équivalent ?",
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "animalsOrFood": {
+        "label": "Transportez-vous des animaux, produits animaux ou denrées alimentaires ?",
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "taxableGoods": {
+        "label": "Transportez-vous des biens imposables ou des marchandises commerciales ?",
+        "yes": "Oui",
+        "no": "Non"
+      }
+    }
+  },
+  "success": {
+    "title": "Demande Soumise avec Succès !",
+    "description": "Votre demande d'e-ticket a été traitée. Veuillez sauvegarder votre code de confirmation.",
+    "applicationCode": "Code de Demande",
+    "downloadPDF": "Télécharger le PDF",
+    "addToWallet": "Ajouter au Portefeuille",
+    "newApplication": "Nouvelle Demande"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite. Veuillez réessayer.",
+    "network": "Erreur de connexion. Veuillez vérifier votre internet.",
+    "validation": "Veuillez corriger les erreurs dans le formulaire.",
+    "server": "Erreur du serveur. Veuillez réessayer plus tard."
+  }
+}

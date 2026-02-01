@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { getMessages, getTranslations } from "next-intl/server";
 
+import { I18nProvider } from "@/components/i18n-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { defaultLocale, type Locale } from "@/i18n/config";
 
 import type { Metadata } from "next";
 
@@ -16,29 +19,50 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "E-Ticket Dominican Republic",
-  description: "Dominican Republic E-Ticket",
-};
+export async function generateMetadata({
+  params: _params,
+}: {
+  params: Promise<{ locale?: string }>;
+}): Promise<Metadata> {
+  const { locale: routeLocale } = await _params;
+  const locale = routeLocale ?? defaultLocale;
+  const t = await getTranslations({ locale, namespace: "metadata" });
 
-export default function RootLayout({
+  return {
+    title: t("title"),
+    description: t("description"),
+    icons: {
+      icon: "/favicon.ico",
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale?: string }>;
 }>) {
+  const { locale: routeLocale } = await params;
+  const locale = (routeLocale ?? defaultLocale) as Locale;
+  const messages = await getMessages({ locale });
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <I18nProvider initialLocale={locale} initialMessages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </I18nProvider>
       </body>
     </html>
   );
