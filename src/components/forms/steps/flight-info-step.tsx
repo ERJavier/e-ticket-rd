@@ -14,6 +14,7 @@ import {
   Search,
   X,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -94,12 +95,15 @@ function FlightNumberField({
   error: string | null;
   isLoading: boolean;
 }) {
+  const t = useTranslations();
   const [isPending, startTransition] = useTransition();
   const { pending: formPending } = useFormStatus();
 
   const validation = validateFlightNumber(field.state.value || "");
   const hasValidFormat = validation.isValid;
-  const flightLabel = isOrigin ? "Origin Flight Number" : "Flight Number";
+  const flightLabel = isOrigin
+    ? t("steps.flight.originFlightNumber.label")
+    : t("steps.flight.flightNumber.label");
 
   const handleLookup = useCallback(() => {
     if (hasDate && hasValidFormat && !isLoading && !isPending) {
@@ -119,7 +123,7 @@ function FlightNumberField({
   // Helper function to get placeholder text
   const getPlaceholderText = () => {
     if (!hasDate) {
-      return "Choose your date first";
+      return t("steps.flight.flightNumber.placeholder");
     }
     return isOrigin
       ? "e.g., IB6275, LH441, AF447"
@@ -135,12 +139,12 @@ function FlightNumberField({
       {/* Standard FormField - always uses input element */}
       <FormField
         field={field}
-        label={`${flightLabel} ${!hasDate ? "(Choose your date first)" : ""}`}
+        label={flightLabel}
         type="text"
         placeholder={getPlaceholderText()}
         required
         disabled={!hasDate || formPending || result?.success}
-        description="Auto-fill: Enter flight number to populate airline and airports"
+        description={t("steps.flight.flightNumber.description")}
         className="max-w-sm"
         inputMode="text"
       />
@@ -162,7 +166,7 @@ function FlightNumberField({
               {isLoading || isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Searching
+                  {t("steps.flight.autoFill.loading")}
                 </>
               ) : (
                 <>
@@ -210,6 +214,7 @@ function TravelDirectionSection({
   stepId: FormStepId;
   flightResult?: FlightLookupResult | null;
 }) {
+  const t = useTranslations();
   // Check if direction was auto-detected
   const showAutoDetectedInfo = flightResult?.success && flightResult.flight;
 
@@ -218,7 +223,7 @@ function TravelDirectionSection({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MapPin className="h-5 w-5" />
-          Travel Direction
+          {t("steps.flight.travelDirection.label")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -227,7 +232,7 @@ function TravelDirectionSection({
           validators={{
             onChange: ({ value }: { value: string }) => {
               if (!value || value.trim() === "") {
-                return "Please select your travel direction";
+                return t("validation.travelDirectionRequired");
               }
               return undefined;
             },
@@ -240,13 +245,13 @@ function TravelDirectionSection({
               options={[
                 {
                   value: "ENTRY",
-                  label: "Entering Dominican Republic",
+                  label: t("steps.flight.travelDirection.entry"),
                   icon: <ArrowDown className="h-6 w-6" />,
                   iconColor: "text-green-700",
                 },
                 {
                   value: "EXIT",
-                  label: "Leaving Dominican Republic",
+                  label: t("steps.flight.travelDirection.exit"),
                   icon: <ArrowUp className="h-6 w-6" />,
                   iconColor: "text-blue-700",
                 },
@@ -268,14 +273,15 @@ function TravelDirectionSection({
               <Alert>
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Auto-detected:</strong> Based on your flight from{" "}
-                  <code>{flightResult.flight.origin.iata}</code> to{" "}
-                  <code>{flightResult.flight.destination.iata}</code>,
-                  we&apos;ve detected you&apos;re{" "}
-                  {directionField.state.value === "ENTRY"
-                    ? "entering"
-                    : "leaving"}{" "}
-                  the Dominican Republic. You can change this if needed.
+                  <strong>{t("steps.flight.autoFill.detected")}</strong>{" "}
+                  {t("steps.flight.autoFill.detectedDescription", {
+                    origin: flightResult.flight.origin.iata,
+                    destination: flightResult.flight.destination.iata,
+                    direction:
+                      directionField.state.value === "ENTRY"
+                        ? t("steps.flight.travelDirection.entering")
+                        : t("steps.flight.travelDirection.leaving"),
+                  })}
                 </AlertDescription>
               </Alert>
             )
@@ -298,10 +304,13 @@ function FlightSearchSection({
   isOrigin = false,
   originDate,
 }: FlightSearchSectionProps) {
+  const t = useTranslations();
   const fieldName = isOrigin
     ? "flightInfo.originFlightNumber"
     : "flightInfo.flightNumber";
-  const dateLabel = isOrigin ? "Origin Travel Date" : "Travel Date";
+  const dateLabel = isOrigin
+    ? t("steps.flight.originTravelDate.label")
+    : t("steps.flight.travelDate.label");
   const dateFieldName = isOrigin
     ? "flightInfo.originTravelDate"
     : "flightInfo.travelDate";
@@ -435,11 +444,13 @@ function FlightSearchStatus({
   result: FlightLookupResult | null;
   error: string | null;
 }) {
+  const t = useTranslations();
+
   if (isLoading) {
     return (
       <div className="animate-in fade-in flex items-center gap-2 text-sm text-blue-600 duration-200">
         <Loader2 className="h-4 w-4 animate-spin" />
-        <span>Searching flight details...</span>
+        <span>{t("steps.flight.autoFill.loading")}</span>
       </div>
     );
   }
@@ -449,7 +460,7 @@ function FlightSearchStatus({
       <div className="animate-in fade-in space-y-3 duration-200">
         <div className="flex items-center gap-2 text-sm text-green-600">
           <CheckCircle className="h-4 w-4" />
-          <span>Flight found! Details populated below.</span>
+          <span>{t("steps.flight.autoFill.success")}</span>
         </div>
       </div>
     );
@@ -459,7 +470,7 @@ function FlightSearchStatus({
     return (
       <div className="animate-in fade-in flex items-center gap-2 text-sm text-red-600 duration-200">
         <AlertCircle className="h-4 w-4" />
-        <span>Flight not found. Please enter details manually below.</span>
+        <span>{t("steps.flight.autoFill.error")}</span>
       </div>
     );
   }
@@ -467,7 +478,7 @@ function FlightSearchStatus({
   return null;
 }
 
-// Flight Details Display Component (unchanged - already well implemented)
+// Flight Details Display Component
 function FlightDetailsDisplay({
   result,
   error,
@@ -475,6 +486,7 @@ function FlightDetailsDisplay({
   fieldPrefix = "flightInfo",
   isOrigin = false,
 }: FlightDetailsDisplayProps) {
+  const t = useTranslations();
   if (!result && !error) return null;
 
   const getFieldName = (field: string) => {
@@ -487,31 +499,39 @@ function FlightDetailsDisplay({
   return (
     <div className="bg-muted/30 space-y-6 rounded-lg p-4 transition-all duration-300">
       <h4 className="text-muted-foreground text-sm font-medium">
-        {isOrigin ? "Origin Flight Details" : "Flight Details"}
+        {isOrigin
+          ? t("steps.flight.originFlightDetails")
+          : t("steps.flight.flightDetails")}
         {result?.success && " ✓"}
       </h4>
 
       {result?.success ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <p className="text-muted-foreground text-sm font-medium">Airline</p>
+            <p className="text-muted-foreground text-sm font-medium">
+              {t("steps.flight.airline.label")}
+            </p>
             <p className="text-sm font-medium">{result.flight?.airline}</p>
           </div>
           <div>
             <p className="text-muted-foreground text-sm font-medium">
-              Aircraft
+              {t("steps.flight.aircraft.label")}
             </p>
             <p className="text-sm font-medium">{result.flight?.aircraft}</p>
           </div>
           <div>
             <p className="text-muted-foreground text-sm font-medium">
-              {isOrigin ? "Origin Departure" : "Departure Port"}
+              {isOrigin
+                ? t("steps.flight.originDeparturePort.label")
+                : t("steps.flight.departurePort.label")}
             </p>
             <p className="text-sm font-medium">{result.flight?.origin.iata}</p>
           </div>
           <div>
             <p className="text-muted-foreground text-sm font-medium">
-              {isOrigin ? "Connection Airport" : "Arrival Port"}
+              {isOrigin
+                ? t("steps.flight.connectionPort.label")
+                : t("steps.flight.arrivalPort.label")}
             </p>
             <p className="text-sm font-medium">
               {result.flight?.destination.iata}
@@ -525,7 +545,7 @@ function FlightDetailsDisplay({
             validators={{
               onBlur: ({ value }: { value: string }) => {
                 if (!value || value.trim() === "") {
-                  return `${isOrigin ? "Origin airline" : "Airline"} is required`;
+                  return t("validation.airlineRequired");
                 }
                 return undefined;
               },
@@ -534,10 +554,12 @@ function FlightDetailsDisplay({
             {(field: AnyFieldApi) => (
               <FormField
                 field={field}
-                label={isOrigin ? "Origin Airline" : "Airline"}
-                placeholder={
-                  isOrigin ? "e.g., Iberia" : "e.g., American Airlines"
+                label={
+                  isOrigin
+                    ? t("steps.flight.originAirline.label")
+                    : t("steps.flight.airline.label")
                 }
+                placeholder={t("steps.flight.airline.placeholder")}
                 required
                 inputMode="text"
                 autoComplete="off"
@@ -549,9 +571,9 @@ function FlightDetailsDisplay({
             {(field: AnyFieldApi) => (
               <FormField
                 field={field}
-                label={`${isOrigin ? "Origin " : ""}Aircraft Type`}
+                label={t("steps.flight.aircraft.label")}
                 disabled
-                placeholder="Auto-populated from flight search"
+                placeholder={t("steps.flight.aircraft.placeholder")}
                 className="bg-muted text-muted-foreground"
                 inputMode="text"
                 autoComplete="off"
@@ -564,7 +586,7 @@ function FlightDetailsDisplay({
             validators={{
               onBlur: ({ value }: { value: string }) => {
                 if (!value || value.trim() === "") {
-                  return `${isOrigin ? "Origin departure airport" : "Departure airport"} is required`;
+                  return t("validation.departurePortRequired");
                 }
                 return undefined;
               },
@@ -574,12 +596,16 @@ function FlightDetailsDisplay({
               <FormField
                 field={field}
                 label={
-                  isOrigin ? "Origin Departure Airport" : "Departure Airport"
+                  isOrigin
+                    ? t("steps.flight.originDeparturePort.label")
+                    : t("steps.flight.departurePort.label")
                 }
-                placeholder={
-                  isOrigin ? "e.g., LIS (your starting point)" : "e.g., MIA"
+                placeholder={t("steps.flight.departurePort.placeholder")}
+                description={
+                  isOrigin
+                    ? t("steps.flight.originDeparturePort.description")
+                    : undefined
                 }
-                description={isOrigin ? "Where your journey begins" : undefined}
                 required
                 inputMode="text"
               />
@@ -591,7 +617,7 @@ function FlightDetailsDisplay({
             validators={{
               onBlur: ({ value }: { value: string }) => {
                 if (!value || value.trim() === "") {
-                  return `${isOrigin ? "Connection airport" : "Arrival airport"} is required`;
+                  return t("validation.arrivalPortRequired");
                 }
                 return undefined;
               },
@@ -600,13 +626,15 @@ function FlightDetailsDisplay({
             {(field: AnyFieldApi) => (
               <FormField
                 field={field}
-                label={isOrigin ? "Connection Airport" : "Arrival Airport"}
-                placeholder={
-                  isOrigin ? "e.g., MAD (where you connect)" : "e.g., SDQ"
+                label={
+                  isOrigin
+                    ? t("steps.flight.connectionPort.label")
+                    : t("steps.flight.arrivalPort.label")
                 }
+                placeholder={t("steps.flight.arrivalPort.placeholder")}
                 description={
                   isOrigin
-                    ? "Where you connect to your final flight"
+                    ? t("steps.flight.connectionPort.description")
                     : undefined
                 }
                 required
@@ -620,7 +648,7 @@ function FlightDetailsDisplay({
   );
 }
 
-// Travel Route Section Component (unchanged - already well implemented)
+// Travel Route Section Component
 function TravelRouteSection({
   form,
   stepId,
@@ -628,15 +656,17 @@ function TravelRouteSection({
   form: AppFormApi;
   stepId: FormStepId;
 }) {
+  const t = useTranslations();
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Route className="h-5 w-5" />
-          Travel Route
+          {t("steps.flight.travelRoute.title")}
         </CardTitle>
         <CardDescription>
-          How are you arriving to the Dominican Republic?
+          {t("steps.flight.travelRoute.description")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -645,7 +675,7 @@ function TravelRouteSection({
           validators={{
             onChange: ({ value }: { value: boolean | undefined }) => {
               if (value === undefined) {
-                return "Please select how you're arriving to Dominican Republic";
+                return t("validation.hasStopsRequired");
               }
               return undefined;
             },
@@ -658,16 +688,17 @@ function TravelRouteSection({
               options={[
                 {
                   value: false,
-                  label: "Direct Flight",
-                  description: "Flying directly to Dominican Republic",
+                  label: t("steps.flight.hasStops.direct"),
+                  description: t("steps.flight.hasStops.directDescription"),
                   icon: <Plane className="h-5 w-5" />,
                   iconColor: "text-green-600",
                 },
                 {
                   value: true,
-                  label: "With Connections",
-                  description:
-                    "Connecting from another flight to reach Dominican Republic",
+                  label: t("steps.flight.hasStops.connections"),
+                  description: t(
+                    "steps.flight.hasStops.connectionsDescription"
+                  ),
                   icon: <Route className="h-5 w-5" />,
                   iconColor: "text-blue-600",
                 },
@@ -689,6 +720,7 @@ export function FlightInfoStep({
   form,
   stepId = "flight-info",
 }: FlightInfoStepProps) {
+  const t = useTranslations();
   // Flight lookup hooks
   const { result, error, isLoading, lookupFlight, reset } = useFlightLookup();
   const {
@@ -848,7 +880,7 @@ export function FlightInfoStep({
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Plane className="h-5 w-5" />
-              Travel Details
+              {t("steps.flight.travelDetails.title")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -872,8 +904,8 @@ export function FlightInfoStep({
               {(field: AnyFieldApi) => (
                 <FormField
                   field={field}
-                  label="Booking Confirmation Number (Optional)"
-                  placeholder="e.g., ABC123 (if available)"
+                  label={t("steps.flight.confirmationNumber.label")}
+                  placeholder={t("steps.flight.confirmationNumber.placeholder")}
                   className="max-w-sm"
                   inputMode="text"
                   autoComplete="off"
@@ -897,10 +929,10 @@ export function FlightInfoStep({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plane className="h-5 w-5" />
-                Origin Flight Details
+                {t("steps.flight.originFlightDetails")}
               </CardTitle>
               <CardDescription>
-                Tell us about your first flight (from your origin country)
+                {t("steps.flight.originFlightDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -932,7 +964,7 @@ export function FlightInfoStep({
                     <Alert variant="destructive">
                       <AlertCircle className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>Connection Error:</strong>{" "}
+                        <strong>{t("steps.flight.connectionError")}</strong>{" "}
                         {connectionValidation.error}
                       </AlertDescription>
                     </Alert>
@@ -941,8 +973,8 @@ export function FlightInfoStep({
                     <Alert>
                       <CheckCircle className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>Connection Validated:</strong> Your flight
-                        connection appears valid.
+                        <strong>{t("steps.flight.connectionValidated")}</strong>{" "}
+                        {t("steps.flight.connectionValidDescription")}
                       </AlertDescription>
                     </Alert>
                   )}
@@ -957,8 +989,8 @@ export function FlightInfoStep({
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            <strong>Connection flights:</strong> This helps us understand your
-            complete journey and ensure proper immigration processing.
+            <strong>{t("steps.flight.connectionFlightsInfoTitle")}</strong>{" "}
+            {t("steps.flight.connectionFlightsInfoDescription")}
           </AlertDescription>
         </Alert>
       )}
@@ -971,8 +1003,8 @@ export function FlightInfoStep({
             <Alert>
               <Info className="h-4 w-4" />
               <AlertDescription>
-                <strong>Group travel:</strong> Flight information can be shared
-                with your group members.
+                <strong>{t("steps.flight.groupTravelInfoTitle")}</strong>{" "}
+                {t("steps.flight.groupTravelInfoDescription")}
               </AlertDescription>
             </Alert>
           );

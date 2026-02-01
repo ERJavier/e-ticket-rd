@@ -1,6 +1,7 @@
 "use client";
 
 import { Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useCallback } from "react";
 import { useFormStatus } from "react-dom";
 import { isValidPhoneNumber } from "react-phone-number-input";
@@ -23,6 +24,7 @@ interface ContactInfoStepProps {
 
 // Enhanced phone field component with consistent patterns
 function PhoneField({ field }: { field: AnyFieldApi }) {
+  const t = useTranslations();
   const { pending: formPending } = useFormStatus();
 
   const handlePhoneChange = useCallback(
@@ -39,9 +41,9 @@ function PhoneField({ field }: { field: AnyFieldApi }) {
   return (
     <FormField
       field={field}
-      label="Phone Number"
+      label={t("steps.contact.phone.label")}
       required
-      description="Enter a phone number with country code for travel notifications"
+      description={t("steps.contact.phone.description")}
       disabled={formPending}
     >
       <PhoneInput
@@ -59,6 +61,8 @@ function PhoneField({ field }: { field: AnyFieldApi }) {
 }
 
 export function ContactInfoStep({ form }: ContactInfoStepProps) {
+  const t = useTranslations();
+
   return (
     <div className="space-y-6">
       {/* Contact Information Section */}
@@ -66,7 +70,7 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Mail className="h-5 w-5" />
-            Contact Information
+            {t("steps.contact.title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -76,7 +80,7 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
             validators={{
               onBlur: ({ value }: { value: string }) => {
                 if (!value || !value.trim()) {
-                  return "Email is required for e-ticket delivery";
+                  return t("steps.contact.email.required");
                 }
                 const result = validateEmail.safeParse(value);
                 return result.success
@@ -88,11 +92,11 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
             {(field: AnyFieldApi) => (
               <FormField
                 field={field}
-                label="Email Address"
+                label={t("steps.contact.email.label")}
                 type="email"
-                placeholder="your@email.com"
+                placeholder={t("steps.contact.email.placeholder")}
                 required
-                description="We'll send your e-ticket confirmation to this email address"
+                description={t("steps.contact.email.description")}
                 inputMode="email"
                 autoComplete="email"
               />
@@ -105,11 +109,11 @@ export function ContactInfoStep({ form }: ContactInfoStepProps) {
             validators={{
               onBlur: ({ value }: { value: string }) => {
                 if (!value || value.trim() === "") {
-                  return "Phone number is required for travel notifications";
+                  return t("steps.contact.phone.required");
                 }
                 return isValidPhoneNumber(value)
                   ? undefined
-                  : "Please enter a valid phone number";
+                  : t("form.validation.invalidPhone");
               },
             }}
           >

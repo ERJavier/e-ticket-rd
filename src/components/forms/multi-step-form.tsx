@@ -1,8 +1,10 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, FileCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -54,37 +56,6 @@ interface FormProps {
 // Constants for step IDs to avoid duplication - use centralized IDs
 const STEP_IDS = FORM_STEP_IDS;
 
-const STEP_TITLES = {
-  TRAVEL_COMPANIONS: "Travel Companions",
-  ALL_TRAVELERS_INFORMATION: "Traveler Information",
-  CONTACT_INFORMATION: "Contact Information",
-  TRAVEL_INFORMATION: "Travel Information",
-  CUSTOMS_DECLARATION: "Customs Declaration",
-} as const;
-
-const FORM_STEPS: Step[] = [
-  {
-    id: STEP_IDS.CONTACT_INFO,
-    title: STEP_TITLES.CONTACT_INFORMATION,
-  },
-  {
-    id: STEP_IDS.FLIGHT_INFO,
-    title: STEP_TITLES.TRAVEL_INFORMATION,
-  },
-  {
-    id: STEP_IDS.TRAVEL_COMPANIONS,
-    title: STEP_TITLES.TRAVEL_COMPANIONS,
-  },
-  {
-    id: STEP_IDS.ALL_TRAVELERS,
-    title: STEP_TITLES.ALL_TRAVELERS_INFORMATION,
-  },
-  {
-    id: STEP_IDS.CUSTOMS_DECLARATION,
-    title: STEP_TITLES.CUSTOMS_DECLARATION,
-  },
-];
-
 const AUTO_SAVE_INTERVAL = 30000; // 30 seconds
 const STORAGE_KEY = "eticket-draft";
 
@@ -94,6 +65,32 @@ export function MultiStepForm({
   applicationCode,
   className,
 }: FormProps) {
+  const t = useTranslations();
+
+  // Define steps with translations inside component to access t
+  const FORM_STEPS: Step[] = [
+    {
+      id: STEP_IDS.CONTACT_INFO,
+      title: t("steps.contact.title"),
+    },
+    {
+      id: STEP_IDS.FLIGHT_INFO,
+      title: t("steps.flight.title"),
+    },
+    {
+      id: STEP_IDS.TRAVEL_COMPANIONS,
+      title: t("steps.companions.title"),
+    },
+    {
+      id: STEP_IDS.ALL_TRAVELERS,
+      title: t("steps.travelers.title"),
+    },
+    {
+      id: STEP_IDS.CUSTOMS_DECLARATION,
+      title: t("steps.customs.title"),
+    },
+  ];
+
   const [currentStepId, setCurrentStepId] = useState<string>(
     STEP_IDS.CONTACT_INFO
   );
@@ -293,34 +290,32 @@ export function MultiStepForm({
     switch (currentStepId) {
       case STEP_IDS.CONTACT_INFO:
         return {
-          title: STEP_TITLES.CONTACT_INFORMATION,
-          subtitle:
-            "Who's filling out this application? And how can we contact you?",
+          title: t("steps.contact.title"),
+          subtitle: t("steps.contact.subtitle"),
         };
       case STEP_IDS.FLIGHT_INFO:
         return {
-          title: STEP_TITLES.TRAVEL_INFORMATION,
-          subtitle: "What are your travel plans?",
+          title: t("steps.flight.title"),
+          subtitle: t("steps.flight.subtitle"),
         };
       case STEP_IDS.TRAVEL_COMPANIONS:
         return {
-          title: STEP_TITLES.TRAVEL_COMPANIONS,
-          subtitle: "Are you traveling with companions?",
+          title: t("steps.companions.title"),
+          subtitle: t("steps.companions.subtitle"),
         };
       case STEP_IDS.ALL_TRAVELERS:
         return {
-          title: STEP_TITLES.ALL_TRAVELERS_INFORMATION,
-          subtitle:
-            "Personal information and address details for all travelers",
+          title: t("steps.travelers.title"),
+          subtitle: t("steps.travelers.subtitle"),
         };
       case STEP_IDS.CUSTOMS_DECLARATION:
         return {
-          title: STEP_TITLES.CUSTOMS_DECLARATION,
-          subtitle: "Items and goods declaration",
+          title: t("steps.customs.title"),
+          subtitle: t("steps.customs.subtitle"),
         };
       default:
         return {
-          title: "E-Ticket Application",
+          title: t("form.title"),
           subtitle: "",
         };
     }
@@ -528,10 +523,10 @@ export function MultiStepForm({
             <Alert className="mb-6">
               <FileCheck className="h-4 w-4" />
               <AlertDescription>
-                <strong>Application Code:</strong> {applicationCode}
+                <strong>{t("form.applicationCode")}:</strong> {applicationCode}
                 <br />
                 <span className="text-muted-foreground text-sm">
-                  Save this code to access your application later
+                  {t("form.saveCode")}
                 </span>
               </AlertDescription>
             </Alert>
@@ -544,11 +539,9 @@ export function MultiStepForm({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <FileCheck className="h-5 w-5" />
-                    E-Ticket Application
+                    {t("form.title")}
                   </CardTitle>
-                  <CardDescription>
-                    Complete all steps to generate your e-ticket
-                  </CardDescription>
+                  <CardDescription>{t("form.subtitle")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <ProgressIndicator
@@ -575,8 +568,10 @@ export function MultiStepForm({
                     </div>
                     <div className="flex items-center gap-3">
                       <Badge variant="outline" className="text-sm">
-                        {stepProgress.currentStepIndex + 1} of {steps.length}
+                        {stepProgress.currentStepIndex + 1} {t("form.of")}{" "}
+                        {steps.length}
                       </Badge>
+                      <LanguageSwitcher />
                       <ModeToggle />
                     </div>
                   </div>
@@ -594,7 +589,7 @@ export function MultiStepForm({
                     <div className="px-6 pb-6">
                       <ValidationError
                         errors={currentStepValidationErrors}
-                        title="Please fix the following issues:"
+                        title={t("form.validation.title")}
                         variant="alert"
                         dismissible
                         onDismiss={() => {
@@ -619,7 +614,7 @@ export function MultiStepForm({
                     className="gap-2"
                   >
                     <ChevronLeft className="h-4 w-4" />
-                    Previous
+                    {t("form.previous")}
                   </Button>
 
                   {isLastStep ? (
@@ -639,7 +634,7 @@ export function MultiStepForm({
                       }
                       className="gap-2"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit Application"}
+                      {isSubmitting ? t("form.submitting") : t("form.submit")}
                     </Button>
                   ) : (
                     <Button
@@ -647,7 +642,7 @@ export function MultiStepForm({
                       disabled={!stepProgress.canGoNext}
                       className="gap-2"
                     >
-                      Next
+                      {t("form.next")}
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   )}

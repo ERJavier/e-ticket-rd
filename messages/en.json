@@ -1,0 +1,214 @@
+{
+  "metadata": {
+    "title": "Dominican Republic E-Ticket System",
+    "description": "Electronic Entry/Exit Form for Migration Control"
+  },
+  "navigation": {
+    "newApplication": "New E-Ticket Application",
+    "importApplication": "Import Previous E-Ticket",
+    "language": "Language",
+    "selectLanguage": "Select language"
+  },
+  "landing": {
+    "title": "Dominican Republic",
+    "subtitle": "E-Ticket System",
+    "description": "Electronic entry or exit form for the Dominican Republic. This digital form replaces the traditional paper-based process for a faster and more efficient migration experience.",
+    "welcome": "Welcome",
+    "welcomeDescription": "Complete your electronic entry or exit form for the Dominican Republic. This digital form replaces the traditional paper-based process for a faster and more efficient migration experience.",
+    "newApplication": "New E-Ticket Application",
+    "importPrevious": "Import Previous E-Ticket",
+    "securityNote": "Your data is protected with secure encryption"
+  },
+  "import": {
+    "title": "Import Previous E-Ticket",
+    "description": "Upload your encrypted e-ticket backup file and enter the same flight number and passport number used when exporting to restore your application data securely.",
+    "fileLabel": "E-Ticket Backup File",
+    "filePlaceholder": "Select your e-ticket backup file",
+    "flightNumber": "Flight Number",
+    "flightPlaceholder": "e.g., AA1234",
+    "passportNumber": "Passport Number",
+    "passportPlaceholder": "Enter passport number",
+    "importButton": "Import & Continue",
+    "importing": "Importing...",
+    "cancel": "Cancel",
+    "error": {
+      "missingData": "Please select your e-ticket backup file and enter both flight number and passport number used during export",
+      "invalidFile": "Invalid e-ticket backup file. Please select a file exported from this system.",
+      "invalidFormat": "Invalid file format. Please select a valid e-ticket backup file.",
+      "decryptFailed": "Failed to decrypt data"
+    }
+  },
+  "form": {
+    "title": "E-Ticket Application",
+    "subtitle": "Complete all steps to generate your e-ticket",
+    "applicationCode": "Application Code",
+    "saveCode": "Save this code to access your application later",
+    "progress": "Progress",
+    "step": "Step",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "validation": {
+      "title": "Please fix the following issues:",
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number"
+    }
+  },
+  "steps": {
+    "contact": {
+      "title": "Contact Information",
+      "subtitle": "Who's filling out this application? And how can we contact you?",
+      "email": {
+        "label": "Email Address",
+        "placeholder": "your@email.com",
+        "required": "Email is required for e-ticket delivery",
+        "description": "We'll send your e-ticket confirmation to this email address"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "required": "Phone number is required for travel notifications",
+        "description": "Enter a phone number with country code for travel notifications"
+      }
+    },
+    "flight": {
+      "title": "Travel Information",
+      "subtitle": "What are your travel plans?",
+      "flightNumber": {
+        "label": "Flight Number",
+        "placeholder": "e.g., AA1234",
+        "description": "Enter your flight number to auto-fill details"
+      },
+      "airline": {
+        "label": "Airline",
+        "placeholder": "Select airline"
+      },
+      "departurePort": {
+        "label": "Departure Airport",
+        "placeholder": "Select departure airport"
+      },
+      "arrivalPort": {
+        "label": "Arrival Airport",
+        "placeholder": "Select arrival airport"
+      },
+      "travelDate": {
+        "label": "Travel Date",
+        "placeholder": "Select date"
+      },
+      "travelDirection": {
+        "label": "Travel Direction",
+        "entry": "Entry to Dominican Republic",
+        "exit": "Exit from Dominican Republic"
+      },
+      "hasStops": {
+        "label": "Does your flight have stops?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "autoFill": {
+        "loading": "Looking up flight information...",
+        "success": "Flight information auto-filled successfully!",
+        "error": "Could not find flight information"
+      }
+    },
+    "companions": {
+      "title": "Travel Companions",
+      "subtitle": "Are you traveling with companions?",
+      "isGroupTravel": {
+        "label": "Are you traveling in a group?",
+        "yes": "Yes, I'm traveling with family or group",
+        "no": "No, I'm traveling alone"
+      },
+      "numberOfCompanions": {
+        "label": "Number of Companions",
+        "description": "Including yourself, how many people are traveling in total?"
+      }
+    },
+    "travelers": {
+      "title": "Traveler Information",
+      "subtitle": "Personal information and address details for all travelers",
+      "personalInfo": {
+        "title": "Personal Information",
+        "firstName": {
+          "label": "First Name",
+          "placeholder": "Enter your first name"
+        },
+        "lastName": {
+          "label": "Last Name",
+          "placeholder": "Enter your last name"
+        },
+        "passport": {
+          "label": "Passport Number",
+          "placeholder": "Enter passport number"
+        },
+        "nationality": {
+          "label": "Nationality",
+          "placeholder": "Select country"
+        },
+        "birthDate": {
+          "label": "Date of Birth",
+          "placeholder": "Select date"
+        },
+        "gender": {
+          "label": "Gender",
+          "male": "Male",
+          "female": "Female",
+          "other": "Other"
+        }
+      },
+      "address": {
+        "title": "Address",
+        "permanentAddress": {
+          "label": "Permanent Address",
+          "placeholder": "Enter your full address"
+        },
+        "residenceCountry": {
+          "label": "Country of Residence",
+          "placeholder": "Select country"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Enter city"
+        }
+      },
+      "addTraveler": "Add Traveler",
+      "removeTraveler": "Remove Traveler",
+      "scanPassport": "Scan Passport"
+    },
+    "customs": {
+      "title": "Customs Declaration",
+      "subtitle": "Items and goods declaration",
+      "overTenThousand": {
+        "label": "Are you carrying more than $10,000 USD in cash or equivalent?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "animalsOrFood": {
+        "label": "Are you carrying animals, animal products, or food items?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "taxableGoods": {
+        "label": "Are you carrying taxable goods or commercial merchandise?",
+        "yes": "Yes",
+        "no": "No"
+      }
+    }
+  },
+  "success": {
+    "title": "Application Submitted Successfully!",
+    "description": "Your e-ticket application has been processed. Please save your confirmation code.",
+    "applicationCode": "Application Code",
+    "downloadPDF": "Download PDF",
+    "addToWallet": "Add to Wallet",
+    "newApplication": "New Application"
+  },
+  "errors": {
+    "generic": "An error has occurred. Please try again.",
+    "network": "Connection error. Please check your internet.",
+    "validation": "Please correct the errors in the form.",
+    "server": "Server error. Please try again later."
+  }
+}

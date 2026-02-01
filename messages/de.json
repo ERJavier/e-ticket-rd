@@ -1,0 +1,214 @@
+{
+  "metadata": {
+    "title": "Dominikanische Republik E-Ticket System",
+    "description": "Elektronisches Ein-/Ausreiseformular für die Migrationskontrolle"
+  },
+  "navigation": {
+    "newApplication": "Neue E-Ticket Anwendung",
+    "importApplication": "Vorheriges E-Ticket Importieren",
+    "language": "Sprache",
+    "selectLanguage": "Sprache auswählen"
+  },
+  "landing": {
+    "title": "Dominikanische Republik",
+    "subtitle": "E-Ticket System",
+    "description": "Elektronisches Ein- oder Ausreiseformular für die Dominikanische Republik. Dieses digitale Formular ersetzt den traditionellen papierbasierten Prozess für ein schnelleres und effizienteres Migrationserlebnis.",
+    "welcome": "Willkommen",
+    "welcomeDescription": "Vervollständigen Sie Ihr elektronisches Ein- oder Ausreiseformular für die Dominikanische Republik. Dieses digitale Formular ersetzt den traditionellen papierbasierten Prozess für ein schnelleres und effizienteres Migrationserlebnis.",
+    "newApplication": "Neue E-Ticket Anwendung",
+    "importPrevious": "Vorheriges E-Ticket Importieren",
+    "securityNote": "Ihre Daten sind mit sicherer Verschlüsselung geschützt"
+  },
+  "import": {
+    "title": "Vorheriges E-Ticket Importieren",
+    "description": "Laden Sie Ihre verschlüsselte E-Ticket Sicherungsdatei hoch und geben Sie die gleiche Flugnummer und Passnummer ein, die beim Exportieren verwendet wurden, um Ihre Anwendungsdaten sicher wiederherzustellen.",
+    "fileLabel": "E-Ticket Sicherungsdatei",
+    "filePlaceholder": "Wählen Sie Ihre E-Ticket Sicherungsdatei",
+    "flightNumber": "Flugnummer",
+    "flightPlaceholder": "z.B., AA1234",
+    "passportNumber": "Passnummer",
+    "passportPlaceholder": "Passnummer eingeben",
+    "importButton": "Importieren & Fortfahren",
+    "importing": "Importieren...",
+    "cancel": "Abbrechen",
+    "error": {
+      "missingData": "Bitte wählen Sie Ihre E-Ticket Sicherungsdatei und geben Sie sowohl die Flugnummer als auch die Passnummer ein, die beim Export verwendet wurden",
+      "invalidFile": "Ungültige E-Ticket Sicherungsdatei. Bitte wählen Sie eine Datei, die aus diesem System exportiert wurde.",
+      "invalidFormat": "Ungültiges Dateiformat. Bitte wählen Sie eine gültige E-Ticket Sicherungsdatei.",
+      "decryptFailed": "Daten konnten nicht entschlüsselt werden"
+    }
+  },
+  "form": {
+    "title": "E-Ticket Anwendung",
+    "subtitle": "Vervollständigen Sie alle Schritte, um Ihr E-Ticket zu generieren",
+    "applicationCode": "Anwendungscode",
+    "saveCode": "Speichern Sie diesen Code, um später auf Ihre Anwendung zuzugreifen",
+    "progress": "Fortschritt",
+    "step": "Schritt",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "submit": "Anwendung Einreichen",
+    "submitting": "Einreichen...",
+    "validation": {
+      "title": "Bitte beheben Sie die folgenden Probleme:",
+      "required": "Dieses Feld ist erforderlich",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "invalidPhone": "Bitte geben Sie eine gültige Telefonnummer ein"
+    }
+  },
+  "steps": {
+    "contact": {
+      "title": "Kontaktinformationen",
+      "subtitle": "Wer füllt diese Anwendung aus? Und wie können wir Sie kontaktieren?",
+      "email": {
+        "label": "E-Mail-Adresse",
+        "placeholder": "ihre@email.com",
+        "required": "E-Mail ist für die E-Ticket Zustellung erforderlich",
+        "description": "Wir senden Ihre E-Ticket Bestätigung an diese E-Mail-Adresse"
+      },
+      "phone": {
+        "label": "Telefonnummer",
+        "required": "Telefonnummer ist für Reisebenachrichtigungen erforderlich",
+        "description": "Geben Sie eine Telefonnummer mit Ländervorwahl für Reisebenachrichtigungen ein"
+      }
+    },
+    "flight": {
+      "title": "Reiseinformationen",
+      "subtitle": "Was sind Ihre Reisepläne?",
+      "flightNumber": {
+        "label": "Flugnummer",
+        "placeholder": "z.B., AA1234",
+        "description": "Geben Sie Ihre Flugnummer ein, um Details automatisch auszufüllen"
+      },
+      "airline": {
+        "label": "Fluggesellschaft",
+        "placeholder": "Fluggesellschaft auswählen"
+      },
+      "departurePort": {
+        "label": "Abflughafen",
+        "placeholder": "Abflughafen auswählen"
+      },
+      "arrivalPort": {
+        "label": "Ankunftsflughafen",
+        "placeholder": "Ankunftsflughafen auswählen"
+      },
+      "travelDate": {
+        "label": "Reisedatum",
+        "placeholder": "Datum auswählen"
+      },
+      "travelDirection": {
+        "label": "Reiserichtung",
+        "entry": "Einreise in die Dominikanische Republik",
+        "exit": "Ausreise aus der Dominikanischen Republik"
+      },
+      "hasStops": {
+        "label": "Hat Ihr Flug Zwischenstopps?",
+        "yes": "Ja",
+        "no": "Nein"
+      },
+      "autoFill": {
+        "loading": "Fluginformationen werden gesucht...",
+        "success": "Fluginformationen erfolgreich automatisch ausgefüllt!",
+        "error": "Fluginformationen konnten nicht gefunden werden"
+      }
+    },
+    "companions": {
+      "title": "Reisebegleiter",
+      "subtitle": "Reisen Sie mit Begleitpersonen?",
+      "isGroupTravel": {
+        "label": "Reisen Sie in einer Gruppe?",
+        "yes": "Ja, ich reise mit Familie oder Gruppe",
+        "no": "Nein, ich reise allein"
+      },
+      "numberOfCompanions": {
+        "label": "Anzahl der Begleiter",
+        "description": "Einschließlich Ihnen, wie viele Personen reisen insgesamt?"
+      }
+    },
+    "travelers": {
+      "title": "Reisende Informationen",
+      "subtitle": "Persönliche Informationen und Adressdetails für alle Reisenden",
+      "personalInfo": {
+        "title": "Persönliche Informationen",
+        "firstName": {
+          "label": "Vorname",
+          "placeholder": "Vornamen eingeben"
+        },
+        "lastName": {
+          "label": "Nachname",
+          "placeholder": "Nachnamen eingeben"
+        },
+        "passport": {
+          "label": "Passnummer",
+          "placeholder": "Passnummer eingeben"
+        },
+        "nationality": {
+          "label": "Staatsangehörigkeit",
+          "placeholder": "Land auswählen"
+        },
+        "birthDate": {
+          "label": "Geburtsdatum",
+          "placeholder": "Datum auswählen"
+        },
+        "gender": {
+          "label": "Geschlecht",
+          "male": "Männlich",
+          "female": "Weiblich",
+          "other": "Andere"
+        }
+      },
+      "address": {
+        "title": "Adresse",
+        "permanentAddress": {
+          "label": "Dauerhafte Adresse",
+          "placeholder": "Vollständige Adresse eingeben"
+        },
+        "residenceCountry": {
+          "label": "Wohnsitzland",
+          "placeholder": "Land auswählen"
+        },
+        "city": {
+          "label": "Stadt",
+          "placeholder": "Stadt eingeben"
+        }
+      },
+      "addTraveler": "Reisenden Hinzufügen",
+      "removeTraveler": "Reisenden Entfernen",
+      "scanPassport": "Pass Scannen"
+    },
+    "customs": {
+      "title": "Zollerklärung",
+      "subtitle": "Gegenstands- und Waren deklaration",
+      "overTenThousand": {
+        "label": "Führen Sie mehr als 10.000 USD in Bargeld oder gleichwertig mit sich?",
+        "yes": "Ja",
+        "no": "Nein"
+      },
+      "animalsOrFood": {
+        "label": "Führen Sie Tiere, Tierprodukte oder Lebensmittel mit sich?",
+        "yes": "Ja",
+        "no": "Nein"
+      },
+      "taxableGoods": {
+        "label": "Führen Sie steuerpflichtige Waren oder Handelswaren mit sich?",
+        "yes": "Ja",
+        "no": "Nein"
+      }
+    }
+  },
+  "success": {
+    "title": "Anwendung Erfolgreich Eingereicht!",
+    "description": "Ihre E-Ticket Anwendung wurde verarbeitet. Bitte speichern Sie Ihren Bestätigungscode.",
+    "applicationCode": "Anwendungscode",
+    "downloadPDF": "PDF Herunterladen",
+    "addToWallet": "Zur Brieftasche Hinzufügen",
+    "newApplication": "Neue Anwendung"
+  },
+  "errors": {
+    "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "network": "Verbindungsfehler. Bitte überprüfen Sie Ihr Internet.",
+    "validation": "Bitte korrigieren Sie die Fehler im Formular.",
+    "server": "Serverfehler. Bitte versuchen Sie es später erneut."
+  }
+}
